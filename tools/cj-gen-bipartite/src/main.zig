@@ -156,11 +156,12 @@ fn genConstraints(rand: std.Random, startX:u64, endX:u64, startY:u64, endY:u64, 
     var iTuple:u64 = 0;
     for (startX..endX) |x| {
         for (startY..endY) |y| {
+            if (x == y) continue;
             varTuples[iTuple] = VarTuple{.x = x, .y = y};
             iTuple += 1;
         }
     }
-    rand.shuffle(VarTuple, varTuples);
+    rand.shuffle(VarTuple, varTuples[0..iTuple]);
 
     for (0..constraints.len) |i| {
         constraints[i].id = @intCast(startDefs + i % (endDefs - startDefs));
@@ -213,10 +214,10 @@ fn checkArgs(a: Args) !void {
     if (a.num_no_goods2 == 0) {
         return error.num_no_goods2_not_specified;
     }
-    if (a.num_constraints1 > (a.num_vars1 * a.num_vars1)) {
+    if (a.num_constraints1 > (a.num_vars1 * a.num_vars1 - a.num_vars1)) {
         return error.num_constraints1_too_large;
     }
-    if (a.num_constraints2 > (a.num_vars2 * a.num_vars2)) {
+    if (a.num_constraints2 > (a.num_vars2 * a.num_vars2 - a.num_vars2)) {
         return error.num_constraints2_too_large;
     }
     if (a.num_constraints > (a.num_vars1 * a.num_vars2)) {
