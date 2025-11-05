@@ -7,6 +7,7 @@ stdenv.mkDerivation {
       python-pkgs.pytest
       python-pkgs.pytest-xdist
     ]))
+    zig
   ]; # build time
   buildInputs = []; # runtime
 }

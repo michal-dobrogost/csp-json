@@ -97,6 +97,7 @@ void cjDomainFree(CjDomain* inout) {
   switch (inout->type) {
     case CJ_DOMAIN_VALUES:
       cjIntTuplesFree(&inout->values);
+      break;
     default:
       assert(0);
       break;
@@ -142,6 +143,7 @@ void cjConstraintDefFree(CjConstraintDef* inout) {
   switch (inout->type) {
     case CJ_CONSTRAINT_DEF_NO_GOODS:
       cjIntTuplesFree(&inout->noGoods);
+      break;
     default:
       assert(0);
       break;

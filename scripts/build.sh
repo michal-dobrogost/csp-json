@@ -17,4 +17,8 @@ BUILD_TYPE='Release'
 
 cmake -S . -B build -D CMAKE_BUILD_TYPE="${BUILD_TYPE}"
 cmake --build build --config "${BUILD_TYPE}" --verbose
-cmake --install build --config Release --verbose --prefix ${BIN_PREFIX}
+cmake --install build --config Release --verbose --prefix "${BIN_PREFIX}"
+
+pushd tools/cj-gen-bipartite
+zig build -Doptimize=ReleaseSafe --prefix-exe-dir "${BIN_PREFIX}"
+popd

@@ -579,7 +579,7 @@ typedef enum CjError {
 // CjIntTuples
 //
 // A representation of an array of tuples of ints.
-// Can also represent an array of ints if arity=0.
+// Can also represent an array of ints if arity is -1.
 //
 
 /**
@@ -631,14 +631,20 @@ void cjIntTuplesArrayFree(CjIntTuples** inout, int size);
 //
 
 typedef struct CjMeta {
+  /** Owned by this struct - freed in cjMetaFree() */
   char* id;
+  /** Owned by this struct - freed in cjMetaFree() */
   char* algo;
-  /** Unparsed JSON string, since params is generator dependent. */
+  /** Unparsed JSON string, since params is generator dependent.
+   * Owned by this struct - freed in cjMetaFree()
+   */
   char* paramsJSON;
 } CjMeta;
 
-/** Zero/null init a CjMeta. */
+/** Null init a CjMeta. */
 CjMeta cjMetaInit();
+
+/** Free id, algo, paramsJSON */
 void cjMetaFree(CjMeta* inout);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -727,6 +733,7 @@ void cjConstraintDefArrayFree(CjConstraintDef** inout, int size);
 typedef struct CjConstraint {
   /** References an entry in constraintDefs */
   int id;
+  /** Arity -1 referencing the list of variables involved in constraint. */
   CjIntTuples vars;
 } CjConstraint;
 
@@ -901,6 +908,7 @@ void cjDomainFree(CjDomain* inout) {
   switch (inout->type) {
     case CJ_DOMAIN_VALUES:
       cjIntTuplesFree(&inout->values);
+      break;
     default:
       assert(0);
       break;
@@ -946,6 +954,7 @@ void cjConstraintDefFree(CjConstraintDef* inout) {
   switch (inout->type) {
     case CJ_CONSTRAINT_DEF_NO_GOODS:
       cjIntTuplesFree(&inout->noGoods);
+      break;
     default:
       assert(0);
       break;
