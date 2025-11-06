@@ -21,4 +21,6 @@ cmake --install build --config Release --verbose --prefix "${BIN_PREFIX}"
 
 pushd tools/cj-gen-bipartite
 zig build -Doptimize=ReleaseSafe --prefix-exe-dir "${BIN_PREFIX}"
+cp src/cj-gen-bipartite.sh "${BIN_PREFIX}"
 popd
+
